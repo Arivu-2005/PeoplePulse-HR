@@ -27,10 +27,19 @@ const Login = () => {
     }
   };
 
-  const handleQuickFill = (demoEmail) => {
+  const handleQuickFill = async (demoEmail) => {
     setError('');
     setEmail(demoEmail);
     setPassword('Password123!');
+    setLoading(true);
+    try {
+      await login(demoEmail, 'Password123!');
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Invalid email or password');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -100,27 +109,31 @@ const Login = () => {
           <div className="grid grid-cols-2 gap-2">
             <button
               onClick={() => handleQuickFill('admin@peoplepulse.com')}
+              disabled={loading}
               className="px-2.5 py-1.5 text-[11px] font-medium bg-slate-50 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg border border-slate-200 transition text-left"
             >
-              👑 Admin (Full Access)
+              👑 Admin (1-Click Login)
             </button>
             <button
               onClick={() => handleQuickFill('hr@peoplepulse.com')}
+              disabled={loading}
               className="px-2.5 py-1.5 text-[11px] font-medium bg-slate-50 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg border border-slate-200 transition text-left"
             >
-              👥 HR Specialist
+              👥 HR Specialist (1-Click Login)
             </button>
             <button
               onClick={() => handleQuickFill('manager@peoplepulse.com')}
+              disabled={loading}
               className="px-2.5 py-1.5 text-[11px] font-medium bg-slate-50 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg border border-slate-200 transition text-left"
             >
-              💼 Team Manager
+              💼 Team Manager (1-Click Login)
             </button>
             <button
               onClick={() => handleQuickFill('employee@peoplepulse.com')}
+              disabled={loading}
               className="px-2.5 py-1.5 text-[11px] font-medium bg-slate-50 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg border border-slate-200 transition text-left"
             >
-              💻 Employee (Self-Service)
+              💻 Employee (1-Click Login)
             </button>
           </div>
         </div>
